@@ -29,25 +29,26 @@ class HealthKitManager: NSObject {
     }
     
     
-    func querySteps() -> Void {
+    func queryHeartRate() -> Void {
         
-        let beatsCount = HKQuantityType.quantityType(
+        let beats = HKQuantityType.quantityType(
             forIdentifier: HKQuantityTypeIdentifier.heartRate)
     
-        let stepsSampleQuery = HKSampleQuery(sampleType: beatsCount!,
+        let beatsSampleQuery = HKSampleQuery(sampleType: beats!,
                                              predicate: nil,
                                              limit: 100,
                                              sortDescriptors: nil)
         {(query, results, error) in
             if let results = results as? [HKQuantitySample] {
-                print("printing results")
-                print(results)
+               
+                for r in results{
+                    print(r.quantity.doubleValue(for: HKUnit(from: "count/min")))
+                }
             }
-            
         }
         
         // Don't forget to execute the Query!
-        hkStore.execute(stepsSampleQuery)
+        hkStore.execute(beatsSampleQuery)
     }
 }
 

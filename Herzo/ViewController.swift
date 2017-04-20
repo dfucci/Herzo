@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         let hkm = HealthKitManager()
         if hkm.authorize() {
             print("Authorized!")
-            hkm.querySteps()
+            hkm.queryHeartRate()
         }
         
         
