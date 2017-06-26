@@ -7,23 +7,26 @@
 //
 
 import UIKit
-
-
+import FirebaseDatabase
 class ViewController: UIViewController {
 
     
 
     
     override func viewDidLoad() {
+             
+        var ref: DatabaseReference!
+        ref = Database.database().reference()
+      
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         let hkm = HealthKitManager()
         if hkm.authorize() {
             print("Authorized!")
-            hkm.queryHeartRate()
+            hkm.queryHeartRate(db: ref)
+            
+        
         }
-        
-        
     }
 
     override func didReceiveMemoryWarning() {

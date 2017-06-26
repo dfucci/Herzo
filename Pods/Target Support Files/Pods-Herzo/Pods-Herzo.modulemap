@@ -1,0 +1,6 @@
+framework module Pods_Herzo {
+  umbrella header "Pods-Herzo-umbrella.h"
+
+  export *
+  module * { export * }
+}

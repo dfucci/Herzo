@@ -8,6 +8,7 @@
 
 import UIKit
 import HealthKit
+import FirebaseDatabase
 
 class HealthKitManager: NSObject {
     let hkStore = HKHealthStore()
@@ -29,8 +30,7 @@ class HealthKitManager: NSObject {
     }
     
     
-    func queryHeartRate() -> Void {
-        
+    func queryHeartRate(db: DatabaseReference) -> Void {
         let beats = HKQuantityType.quantityType(
             forIdentifier: HKQuantityTypeIdentifier.heartRate)
     
@@ -40,12 +40,14 @@ class HealthKitManager: NSObject {
                                              sortDescriptors: nil)
         {(query, results, error) in
             if let results = results as? [HKQuantitySample] {
-               
                 for r in results{
                     print(r.quantity.doubleValue(for: HKUnit(from: "count/min")))
+                    let timestamp = String(NSDate().timeIntervalSince1970).replacingOccurrences(of: ".", with: ";")
+                      db.child("beats").child(timestamp).setValue(["beat": r.quantity.doubleValue(for: HKUnit(from: "count/min"))])
                 }
             }
         }
+        
         
         // Don't forget to execute the Query!
         hkStore.execute(beatsSampleQuery)
